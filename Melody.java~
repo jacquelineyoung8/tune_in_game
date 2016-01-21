@@ -1,0 +1,105 @@
+import java.util.LinkedList;
+//import java.io.*;
+//import javax.sound.sampled.*;
+
+public class Melody implements Comparable<Melody> {
+  public LinkedList<Note> notesCollection;
+  private Note front, current;
+  private int size;
+  // if we are going touse these instance var we need to make sure to create a means of setting them 
+  
+  public Melody() {
+    notesCollection  = new LinkedList<Note>();
+    size = 0;
+  }
+  
+  public LinkedList<Note> getNotes(){   
+    return notesCollection; 
+  }
+  
+  public Note getFront(){
+    return front; 
+  }
+  
+  public Note getCurrent(){
+    return current; 
+  }
+  
+  public int getSize(){
+    return size; 
+  }
+  
+  public void addNote(String noteStr) throws Exception{
+    notesCollection.add(new Note(noteStr));
+    size++;
+  }
+  
+  public void addNote(Note note) throws Exception{
+    notesCollection.add(note);
+    size++;
+  }
+  
+  public void playMelody() throws Exception{
+    for(int i = 0; i < size; i++){
+      notesCollection.get(i).play(); 
+      Thread.sleep(300);
+    }
+  }
+  
+  
+  
+  public String toString(){
+    String notes = "";
+    for(int i = 0; i < notesCollection.size(); i++){
+      notes += notesCollection.get(i).getName() + " "; 
+    }
+    return notes;
+  }
+  
+  public void hotCrossBuns() throws Exception{
+    addNote("e1");
+    addNote("d1");
+    addNote("c1");
+  }
+  
+  public void hotCrossBoos() throws Exception{
+    addNote("a1");
+    addNote("b1");
+    addNote("c1");
+  }
+  
+  public int compareTo(Melody otherMelody) {
+    //you want to check note by note
+    Integer l = (Integer)this.notesCollection.size();
+    Integer otherL = (Integer)otherMelody.notesCollection.size();
+    return l.compareTo(otherL);
+  }
+  
+  public boolean compareNotes(Melody otherMelody) {
+    if (size != otherMelody.getSize()) return false;
+    else{
+      for (int i = 0; i < size; i++){
+        // get the notes of the melody and compare it to the notes that the user selects from the playGame GUI
+        if (notesCollection.get(i).compareTo(otherMelody.getNotes().get(i)) != 0) return false;
+      }
+      return true;
+    }
+  } 
+  
+  
+//   public playMelody(){
+//     for (int i = 0; i < notesCollection.size(); i++){
+//       notesCollection.get(i).play();
+//       Thread.sleep(300);
+//     }
+//   }
+  
+  
+  public static void main(String[] args) throws Exception {
+    Melody m = new Melody();
+    m.hotCrossBuns();
+    m.playMelody();
+    System.out.println(m);
+  }
+  
+}

@@ -1,0 +1,41 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+public class CorrectPanel extends JPanel {
+  private JLabel youWin;
+  private JButton nextLevel;
+  private ImageIcon winImg,nextLevelImg;
+  
+  public CorrectPanel(){
+    
+    
+    setLayout (new GridLayout(2,1)); 
+    setBackground(new Color(255, 222, 156)); 
+    
+    winImg = new ImageIcon("youWin.gif");
+    youWin = new JLabel(winImg);
+    nextLevelImg = new ImageIcon("nextLevel.gif");
+    nextLevel = new JButton(nextLevelImg);
+        nextLevel.addActionListener(new ActionListener() { // Show "PlayPanel at Level 1" panel when button is clicked
+      //    @Override
+      public void actionPerformed(ActionEvent arg0) {
+        TuneInGUI.cl.show(TuneInGUI.cards, "Play Panel"); 
+        PlayPanel.setLevel((PlayPanel.getLevel())+1); // go to next Level
+      }
+    });
+    nextLevel.setBorder(null);
+    nextLevel.setMargin(new Insets(0, 0, 0, 0)); 
+    
+    // create and instantiate the icons later 
+    
+    add(youWin);
+    add(nextLevel);
+    
+    
+  }
+  
+  
+  
+}

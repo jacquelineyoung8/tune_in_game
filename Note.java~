@@ -1,0 +1,125 @@
+
+/* Pet, Jackie, and Alice
+ Note.java
+ the representation of a note that will be used for the game TuneIn */
+import java.io.*;
+import javax.sound.sampled.*;
+
+
+// we might need to make Note comparable
+public class Note {
+  private String pic, sound, name;
+  File noteFile;  // to "noteFile???
+  AudioInputStream stream, audio2;
+  AudioFormat format;
+  DataLine.Info info;
+  Clip clip;
+  
+  public Note (String name) throws Exception{
+    this.name = name;
+    pic = name + ".gif";
+    sound = name + ".wav";
+    noteFile = new File(sound);
+    
+    try {  
+      stream = AudioSystem.getAudioInputStream(noteFile);
+      format = stream.getFormat();
+      info = new DataLine.Info(Clip.class, format);
+      clip = (Clip) AudioSystem.getLine(info);
+      
+      
+      BufferedInputStream myStream = new BufferedInputStream(getClass().getResourceAsStream(sound)); 
+      audio2 = AudioSystem.getAudioInputStream(myStream);
+      
+//      //read audio data from whatever source (file/classloader/etc.)
+//      InputStream audioSrc = getClass().getResourceAsStream(sound);
+//      //add buffer for mark/reset support
+//      InputStream bufferedIn = new BufferedInputStream(stream);
+//      AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
+      
+    }
+    catch (Exception e) {
+      //whatevers
+    }
+  }
+  
+  public String getName(){
+    return name; 
+  }
+  
+  public String getPic(){
+    return pic; 
+  }
+  
+  public String getSound(){
+    return sound; 
+  }
+  
+  public void play() throws Exception{
+    clip.open(stream);
+    clip.start();
+    audio2.reset();
+
+  }
+  
+  public int compareTo(Note other){
+   return (this.name.compareTo(other.getName())); 
+  }
+  
+  public static void main(String[] args) throws Exception  {
+//    Note a = new Note("a");
+//    Note b = new Note("b");
+    Note c = new Note("c");
+    Note d = new Note("d");
+    Note e = new Note("e");
+    Note f = new Note("f");
+//    Note g = new Note("g");
+    e.play();
+    Thread.sleep(500);
+    e.play();
+    Thread.sleep(500);
+//    d.play();
+//    Thread.sleep(500);
+//    c.play();
+//    Thread.sleep(500);
+//    
+//    e.play();
+//    Thread.sleep(500);
+//    d.play();
+//    Thread.sleep(500);
+//    c.play();
+//    Thread.sleep(500);
+//    
+//    c.play();
+//    Thread.sleep(200);
+//    c.play();
+//    Thread.sleep(200);
+//    c.play();
+//    Thread.sleep(200);
+//    c.play();
+//    Thread.sleep(200);
+//    
+//    d.play();
+//    Thread.sleep(200);
+//    d.play();
+//    Thread.sleep(200);
+//    d.play();
+//    Thread.sleep(200);
+//    d.play();
+//    Thread.sleep(200);
+//    
+//    e.play();
+//    Thread.sleep(500);
+//    d.play();
+//    Thread.sleep(500);
+//    c.play();
+//    Thread.sleep(500);
+    
+    
+    
+    
+    
+  }
+  
+  
+}

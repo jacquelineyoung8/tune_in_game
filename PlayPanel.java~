@@ -1,0 +1,341 @@
+/* Pet, Alice, and Jacqueline
+ * Level panel for the TuneIn game
+ * LevelPanel.java */
+
+import java.util.HashMap;
+import java.util.Map;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.LinkedList;
+import java.lang.*;
+
+
+public class PlayPanel extends JPanel{
+  private Map<String, JButton> buttonMap = new HashMap <String, JButton> ();
+  private static JLabel levelTitle;
+  private JButton goBack, imReady;
+  private ImageIcon goBackImg,imReadyImg;
+  private static ImageIcon titleImg;
+  private static int level;
+  private int imReadyPressed;
+  private String [] keyNames = {"c1","c1Sharp","d1","d1Sharp","e1","f1","f1Sharp","g1","g1Sharp","a1","a1Sharp",
+    "b1","c2","c2Sharp","d2","d2Sharp","e2","f2","f2Sharp","g2","g2Sharp","a2","a2Sharp","b2"};
+  private PlayGame game;
+//   Timer timer;
+  
+  // add the lives images 
+  
+  /************************************
+    * class cosntructor
+    * @param: the current level of the game
+    * this will allow the panel to use the correct image for the title label
+    * ******************************* */
+  
+  public PlayPanel(PlayGame g) {
+    //TuneInGUI.frame.setPreferredSize(new Dimension(900, 700));
+    //this.game = new PlayGame();
+    game = g;
+    level = 1;
+//    dequeued = game.getDequeued();
+    imReadyPressed = 0;
+    
+//    timer = new Timer(500, new TimerListener());
+    //set background color
+    setBackground(new Color(255, 222, 156));    
+    
+    // set the layout for this panel
+    setLayout (new BorderLayout()); 
+    
+    // add the various panels 
+    add(makeNorthPanel(), BorderLayout.NORTH);
+    add(makeCenterPanel(), BorderLayout.CENTER);
+    add(makeSouthPanel(), BorderLayout.SOUTH); 
+    
+  }
+  
+//  
+//  public static void setGame (PlayGame newGame){
+//    this.game = newGame;
+//  }
+  
+  private void flashKey (JButton button) throws Exception {
+    ImageIcon flash = new ImageIcon(getKeyFromValue(button) + "flash.gif");
+    button.setIcon(flash);
+      button.setBorder(null);
+  //    button.setMargin(new Insets(0,0,0,0));
+  }
+  
+  
+  
+  public static void setLevel(int l){
+    level =l;
+    titleImg = new ImageIcon(l+"level.gif");
+    levelTitle.setIcon(titleImg);
+    
+    
+  }
+  
+  public static int getLevel(){
+    return level;
+    
+  }
+  
+  
+  
+  private void deflashKey (JButton button) throws Exception{
+    ImageIcon original = new ImageIcon(getKeyFromValue(button) + ".gif");
+    button.setIcon(original);
+    button.setFocusable(false);
+     button.setBorder(null);
+  }
+  
+  private JPanel makeNorthPanel() {
+    JPanel northPanel = new JPanel();
+    northPanel.setBackground(new Color(255, 222, 156));
+    GridLayout gridLayout = new GridLayout(1,2);
+    goBackImg = new ImageIcon ("back.gif");  // // ***maybe we dont even need this because if they wanted to stop they 
+    goBack = new JButton(goBackImg);         // // ***could always just quit out of the screen? Idk if this is necessary plus
+    goBack.setBorder(null);                  // // ***it makes out game look ugly lmao 
+    goBack.setMargin(new Insets(0, 0, 0, 0));
+    
+    northPanel.setLayout(gridLayout);
+    //northPanel.add(goBack);
+    
+    
+    titleImg = new ImageIcon (level+"level.gif");
+    levelTitle = new JLabel(titleImg);
+    
+    northPanel.add(levelTitle);
+    
+    return northPanel;
+    
+  }
+  
+  
+  
+  private JPanel makeCenterPanel() {
+    JPanel centerPanel = new JPanel();
+    centerPanel.setBackground(new Color(255, 222, 156));
+    
+    
+    
+    // im unsure of what's the easiest to create and place all of the keys 
+    // i think that the default layout would be fine in this center layout but like...
+    // since the keys are named a1, or a1sharp like... how LOL
+    
+    // also not sure of whether or not I should keep the array of keybuttons and the key imageicons 
+    
+    
+    for (int i = 0 ; i < keyNames.length; i ++) {
+      String name = keyNames[i];
+      ImageIcon nameImage = new ImageIcon (name + ".gif");
+      JButton nameKey = new JButton(nameImage);
+      nameKey.addActionListener(new KeyButtonListener());
+      nameKey.setBorder(null);
+      nameKey.setMargin(new Insets(0, 0, 0, 0));
+      nameKey.setFocusable(false);
+      nameKey.setBorderPainted(false);
+      nameKey.setContentAreaFilled(false);
+//      nameKey.setText(name);
+      buttonMap.put(name,nameKey);
+      centerPanel.add(nameKey);
+      
+    }
+    //   System.out.println(buttonMap);
+    return centerPanel;
+    
+  }
+  
+  private JPanel makeSouthPanel() {
+    
+    JPanel southPanel = new JPanel();
+    southPanel.setBackground(new Color(255, 222, 156));
+    imReadyImg  = new ImageIcon("imready.gif");
+    imReady = new JButton(imReadyImg);
+    imReady.addActionListener(new ImReadyButtonListener());
+    imReady.setBorder(null);
+   // imReady.setMargin(new Insets(-1, -1, -1, -1));
+    imReady.setFocusable(false);
+          imReady.setBorderPainted(false);
+      imReady.setContentAreaFilled(false);
+    
+    southPanel.add(imReady);
+    
+    return southPanel;
+    
+  }
+  
+  private String getKeyFromValue(JButton button) {
+    String key = "";
+    for (Map.Entry<String, JButton> entry : buttonMap.entrySet()) {
+      if (entry.getValue().equals(button)) {
+        key = entry.getKey();
+//        System.out.println(entry.getKey());
+      }
+      
+    } 
+    return key;
+  }
+  
+//  private class TimerListener implements ActionListener {
+//    public void actionPerformed (ActionEvent event){
+//      try{
+//        for (Note currentNote: game.ourMelody.notesCollection) {
+//            String buttonName = currentNote.getName();
+//            deflashKey(buttonMap.get(buttonName));
+//            
+//          }
+//    }
+//      
+//      catch (Exception e) {
+//        System.out.println("timer issues");
+//      
+//      
+//      }
+//  
+//  }
+//  }
+//  
+  private class ImReadyButtonListener implements ActionListener {
+    public void actionPerformed (ActionEvent event){
+      System.out.println(game.getCollectionSize());
+      //if lives, check if imReadyPressed is odd or even
+//      if (game.gameOver()){
+//        TuneInGUI.cl.show(TuneInGUI.cards, "Win Game Screen"); 
+//      
+//      }
+//      else{
+      try{
+        imReadyPressed ++;
+        if (imReadyPressed == 1) {
+////          timer.start();
+          
+          // this is to ensure that if the user clicks keys before imReady
+          game.setUserMelody(new Melody());
+          
+          System.out.println("The correct answer is: " + game.ourMelody);
+          
+          for (Note currentNote: game.ourMelody.notesCollection) {
+            String buttonName = currentNote.getName();
+            flashKey(buttonMap.get(buttonName));
+            currentNote.play();
+            Thread.sleep(500);
+            //deflashKey(buttonMap.get(buttonName));
+//            timer.stop();
+            
+          }
+          
+          imReadyImg = new ImageIcon("imDone.gif");
+          imReady.setIcon(imReadyImg);
+        }
+        
+        if (imReadyPressed == 2){
+          //call method to compare linked lists to check accuracy 
+          // if (!method) go to the lose screen 
+          // else win screen that has nextLevel button 
+          
+          // I couldn't figure out timer, but here's a simpler substitute,
+          // it unflashes the notes when user submits their answer
+          for (Note currentNote: game.ourMelody.notesCollection) {
+            String buttonName = currentNote.getName();
+            deflashKey(buttonMap.get(buttonName));
+            
+          }
+          
+          boolean isCorrect = game.checkTwoMelodies();
+          
+          if (!isCorrect) {
+            imReadyImg = new ImageIcon("imready.gif");
+            imReady.setIcon(imReadyImg);
+            System.out.println("YOU LOSE");
+            TuneInGUI.cl.show(TuneInGUI.cards, "Incorrect Screen"); 
+            game.reset();
+            setLevel(1);
+            imReadyPressed = 0;
+            imReadyImg = new ImageIcon("imready.gif");
+            imReady.setIcon(imReadyImg);
+            //level++;
+            //titleImg = new ImageIcon(level+"level.gif");
+            //levelTitle.setIcon(titleImg);
+//            TuneInGUI.cl.show(TuneInGUI.cards, "Correct Screen"); 
+//            imReadyPressed = 0;
+//            imReadyImg = new ImageIcon("imready.gif");
+//            imReady.setIcon(imReadyImg);
+          }
+            
+          else if (game.collection.pq.size() == 0){
+            TuneInGUI.cl.show(TuneInGUI.cards, "Win Game Screen"); 
+            
+          
+          }
+          else {
+//            imReadyImg = new ImageIcon("imready.gif");
+//            imReady.setIcon(imReadyImg);
+//            System.out.println("YOU LOSE");
+//            TuneInGUI.cl.show(TuneInGUI.cards, "Incorrect Screen"); 
+//            game.reset();
+//            setLevel(1);
+//            imReadyPressed = 0;
+//            imReadyImg = new ImageIcon("imready.gif");
+//            imReady.setIcon(imReadyImg);
+            
+                   TuneInGUI.cl.show(TuneInGUI.cards, "Correct Screen"); 
+            imReadyPressed = 0;
+            imReadyImg = new ImageIcon("imready.gif");
+            imReady.setIcon(imReadyImg);
+            game.ourMelody = game.collection.dequeue();
+            game.userMelody = new Melody();
+            
+          }
+          
+          
+        }
+      }
+      
+      catch (Exception e) {
+        System.out.println("cannot play");
+        
+      }
+      
+    }
+//    }
+  }
+  
+  
+  
+  private class KeyButtonListener implements ActionListener {
+    public void actionPerformed (ActionEvent event) { 
+      try {
+        
+        JButton buttonClicked = (JButton)event.getSource();
+        buttonClicked.setSelected(false);
+        String buttonName = getKeyFromValue(buttonClicked);
+        
+        Note note = new Note(buttonName);
+        
+        
+      flashKey(buttonClicked);
+        note.play();
+        deflashKey(buttonClicked);
+        
+        game.updateUserMelody(buttonName);
+        System.out.println("Your answer is: " + game.userMelody);
+      }
+      
+      catch (Exception e) {
+        System.out.println("Something went wrong");
+      }
+    }
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+}
+

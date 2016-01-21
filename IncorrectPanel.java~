@@ -1,0 +1,43 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+public class IncorrectPanel extends JPanel {
+  private JLabel youLose;
+  private JButton tryAgain;
+  private ImageIcon loseImg,againImg;
+  
+  public IncorrectPanel(){
+    
+    
+    setLayout (new GridLayout(2,1)); 
+    setBackground(new Color(255, 222, 156)); 
+    
+    loseImg = new ImageIcon("youLose.gif");
+    youLose = new JLabel(loseImg);
+    againImg = new ImageIcon("tryAgain.gif");
+    tryAgain = new JButton(againImg);
+        tryAgain.addActionListener(new ActionListener() { // Show "PlayPanel at Level 1" panel when button is clicked
+      //    @Override
+      public void actionPerformed(ActionEvent arg0) {
+        //PlayGame reStart = new PlayGame();
+        //TuneInGUI.playPanel = new PlayPanel(reStart);
+        //TuneInGUI.playPanel.setGame(reStart);
+        TuneInGUI.cl.show(TuneInGUI.cards, "Play Panel"); 
+      }
+    });
+    tryAgain.setBorder(null);
+    tryAgain.setMargin(new Insets(0, 0, 0, 0)); 
+    
+    // create and instantiate the icons later 
+    
+    add(youLose);
+    add(tryAgain);
+    
+    
+  }
+  
+  
+  
+}

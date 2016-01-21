@@ -1,0 +1,20 @@
+/* Pet, Alice, and Jacqueline 
+ * Instructions.java
+ * the opening screen for the TuneIn game */
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+
+public class Instructions {
+  private JLabel howToPlay,step1,step2,step3;
+  private ImageIcon howToPlayImg,step2Img,step2Img,step3Img,startButton2Img;
+  private JButton startButton2;
+  
+  public Instructions (){
+    
+  
+  
+  }
+
+}
