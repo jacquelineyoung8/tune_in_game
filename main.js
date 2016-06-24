@@ -2,9 +2,12 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const _ = require('lodash');
 
-class GreeterBox extends React.Component {
-  constructor(props){
+class Note extends React.Component {
+  constructor(props, name){
     super(props);
+    this.name = name;
+    this.soundFile = new Audio(`Note Sounds/${this.name}.wav`);
+
     this.state = {value: this.props.value};
     this.handleChange = this.handleChange.bind(this);
   }
@@ -17,7 +20,7 @@ class GreeterBox extends React.Component {
         <label> Name: </label>
         <input type="text" value={this.state.value} onChange={this.handleChange} />
 
-        <div className="greeterBox">
+        <div className="NoteBox">
             Hello, I am a {_.join(_.reverse(_.split(this.state.value, "")), "")}
         </div>
       </div>
@@ -25,14 +28,14 @@ class GreeterBox extends React.Component {
   }
 }
 
-class GreeterDad extends React.Component {
+class NoteDad extends React.Component {
 	render() {
 		return(
-			<div className="greeterBox">
+			<div className="NoteBox">
 				<p className="header">
-					<GreeterBox
+					<NoteBox
 						value="Jackie" />
-					<GreeterBox
+					<NoteBox
 						value="Scott"/>
 				</p>
 			</div>);
@@ -41,7 +44,7 @@ class GreeterDad extends React.Component {
 	
 
 ReactDOM.render(
-  <GreeterDad />,
+  <NoteDad />,
   document.getElementById('example')
 
 );
